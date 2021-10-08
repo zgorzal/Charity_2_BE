@@ -6,4 +6,8 @@ public class AppRequestException extends RuntimeException {
         super(message, cause);
     }
 
+    public AppRequestException(String message) {
+        super(message);
+    }
+
 }

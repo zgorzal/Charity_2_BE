@@ -6,32 +6,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import pl.zgorzal.charity_2_be.user.User;
+import pl.zgorzal.charity_2_be.user.UserRepository;
+
+import javax.transaction.Transactional;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class LoginUserServiceTest {
 
     @Autowired
     private LoginUserService loginUserService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     void loadUserByUsername_userExists_returnUser() {
-        //given
         String email = "test@test.pl";
-        //when
+        User user = new User(email, "password", true, new HashSet<>());
+        userRepository.save(user);
         UserDetails userDetails = loginUserService.loadUserByUsername(email);
-        //then
         assertNotNull(userDetails);
     }
 
     @Test
     void loadUserByUsername_userNotExist_throwUsernameNotFoundException() {
-        //given
         String email = "notExist@test.pl";
-        //when
-
-        //then
         Assertions.assertThrows(UsernameNotFoundException.class,
                 () -> loginUserService.loadUserByUsername(email));
     }

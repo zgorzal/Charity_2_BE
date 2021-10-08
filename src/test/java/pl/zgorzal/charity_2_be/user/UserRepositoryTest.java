@@ -4,9 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
+
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class UserRepositoryTest {
 
     @Autowired
@@ -14,21 +19,17 @@ class UserRepositoryTest {
 
     @Test
     void findByEmail_userExists_resultUser() {
-        //given
         String email = "test@test.pl";
-        // when
+        User addUser = new User(email, "password", true, new HashSet<>());
+        userRepository.save(addUser);
         User user = userRepository.findByEmail(email);
-        // then
         assertNotNull(user);
     }
 
     @Test
     void findByEmail_userNotExist_resultNull() {
-        //given
         String email = "notExist@test.pl";
-        // when
         User user = userRepository.findByEmail(email);
-        // then
         assertNull(user);
     }
 

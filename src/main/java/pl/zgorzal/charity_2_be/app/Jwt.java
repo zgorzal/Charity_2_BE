@@ -16,13 +16,14 @@ public class Jwt {
     private final String SECRET_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
 
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts
+        String jwt = Jwts
                 .builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+        return "Bearer " + jwt;
     }
 
     public String generateToken(UserDetails userDetails) {
