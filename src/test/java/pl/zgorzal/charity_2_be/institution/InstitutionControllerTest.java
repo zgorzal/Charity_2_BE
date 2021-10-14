@@ -1,4 +1,4 @@
-package pl.zgorzal.charity_2_be.category;
+package pl.zgorzal.charity_2_be.institution;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class CategoryControllerTest {
+class InstitutionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,31 +28,34 @@ class CategoryControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private InstitutionRepository institutionRepository;
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void addCategory_authorized() throws Exception {
+    void addInstitution_authorized() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/category")
+        mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"name\": \"category name\"}"))
+                .content("{\"name\": \"institution name\"," +
+                        "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        assertNotNull(categoryRepository.findAll()
+        assertNotNull(institutionRepository.findAll()
                 .stream()
-                .filter(s -> s.getName().equals("category name")));
+                .filter(s -> s.getName().equals("institution name")));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/category")
+        mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"name\": \"category name\"}"))
+                .content("{\"name\": \"institution name\"," +
+                        "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(404));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/category")
+        mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"name\": \" \"}"))
+                .content("{\"name\": \"\"," +
+                        "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(400));
     }
@@ -60,18 +63,20 @@ class CategoryControllerTest {
     @Test
     @WithMockUser()
     void addCategory_notAuthorized_User() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/category")
+        mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"name\": \"category name\"}"))
+                .content("{\"name\": \"institution name\"," +
+                        "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
 
     @Test
     void addCategory_notAuthorized() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/category")
+        mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"name\": \"category name\"}"))
+                .content("{\"name\": \"institution name\"," +
+                        "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
@@ -79,28 +84,30 @@ class CategoryControllerTest {
     @Test
     @WithMockUser
     void getCategory_authorized() throws Exception {
-        Category category = new Category();
-        category.setName("test");
-        categoryRepository.save(category);
+        Institution institution = new Institution();
+        institution.setName("test");
+        institution.setDescription("test test");
+        institutionRepository.save(institution);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/category/" + category.getId()))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/institution/" + institution.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andReturn();
 
-        Category checkCategory = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Category.class);
-        assertNotNull(checkCategory);
-        assertEquals(checkCategory.getId(), category.getId());
-        assertEquals(checkCategory.getName(), "test");
+        Institution checkInstitution = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Institution.class);
+        assertNotNull(checkInstitution);
+        assertEquals(checkInstitution.getId(), institution.getId());
+        assertEquals(checkInstitution.getName(), "test");
+        assertEquals(checkInstitution.getDescription(), "test test");
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/0"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/institution/0"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(404));
     }
 
     @Test
     void getCategory_notAuthorized() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
@@ -108,31 +115,36 @@ class CategoryControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void updateCategory_authorized() throws Exception {
-        Category category = new Category();
-        category.setName("category name");
-        categoryRepository.save(category);
+        Institution institution = new Institution();
+        institution.setName("test");
+        institution.setDescription("test test");
+        institutionRepository.save(institution);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"id\":" + category.getId() + "," +
-                        "\"name\": \"new name\"}"))
+                .content("{\"id\":" + institution.getId() + "," +
+                        "\"name\": \"new name\", " +
+                        "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        Category newCategory = categoryRepository.getById(category.getId());
-        assertEquals(newCategory.getName(), "new name");
+        Institution newInstitution = institutionRepository.getById(institution.getId());
+        assertEquals(newInstitution.getName(), "new name");
+        assertEquals(newInstitution.getDescription(), "new description");
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"id\":" + 0 + "," +
-                        "\"name\": \"new name\"}"))
+                        "\"name\": \"new name\", " +
+                        "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(404));
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
-                .content("{\"id\":" + category.getId() + "," +
-                        "\"name\": \" \"}"))
+                .content("{\"id\":" + institution.getId() + "," +
+                        "\"name\": \"\", " +
+                        "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(400));
 
@@ -141,20 +153,22 @@ class CategoryControllerTest {
     @Test
     @WithMockUser
     void updateCategory_notAuthorized_User() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"id\":" + 1 + "," +
-                        "\"name\": \"new name\"}"))
+                        "\"name\": \"new name\", " +
+                        "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
 
     @Test
     void updateCategory_notAuthorized() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"id\":" + 1 + "," +
-                        "\"name\": \"new name\"}"))
+                        "\"name\": \"new name\", " +
+                        "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
@@ -162,18 +176,19 @@ class CategoryControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void deleteCategory_authorized() throws Exception {
-        Category category = new Category();
-        category.setName("category name");
-        categoryRepository.save(category);
+        Institution institution = new Institution();
+        institution.setName("test");
+        institution.setDescription("test test");
+        institutionRepository.save(institution);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/category/" + category.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/institution/" + institution.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        Category checkCategory = categoryRepository.findById(category.getId()).orElse(null);
-        assertNull(checkCategory);
+        Institution checkInstitution = institutionRepository.findById(institution.getId()).orElse(null);
+        assertNull(checkInstitution);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/category/0"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/institution/0"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(404));
 
@@ -182,15 +197,16 @@ class CategoryControllerTest {
     @Test
     @WithMockUser
     void deleteCategory_notAuthorized_User() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/category/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
 
     @Test
     void deleteCategory_notAuthorized() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/category/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
+
 }

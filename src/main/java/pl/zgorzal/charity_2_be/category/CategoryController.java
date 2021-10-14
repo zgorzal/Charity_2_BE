@@ -31,6 +31,8 @@ public class CategoryController {
     public void updateCategory(@Valid @RequestBody Category category) {
         try {
             categoryService.updateCategory(category);
+        } catch (AppRequestException e) {
+            throw new AppRequestException("Kategoria o id " + category.getId() + " nie istnieje");
         } catch (Exception e) {
             throw new AppRequestException("Podana kategoria już istnieje");
         }
