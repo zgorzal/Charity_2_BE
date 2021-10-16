@@ -13,11 +13,7 @@ public class InstitutionService {
     private final InstitutionRepository institutionRepository;
 
     public void addInstitution(Institution institution) {
-        try {
-            institutionRepository.save(institution);
-        } catch (Exception e) {
-            throw new AppRequestException("Podana instytucja już istnieje");
-        }
+        institutionRepository.save(institution);
     }
 
     public Institution getInstitution(Long id) {

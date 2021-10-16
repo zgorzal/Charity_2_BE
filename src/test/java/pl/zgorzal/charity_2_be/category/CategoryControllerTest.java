@@ -40,15 +40,13 @@ class CategoryControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        assertNotNull(categoryRepository.findAll()
-                .stream()
-                .filter(s -> s.getName().equals("category name")));
+        assertNotNull(categoryRepository.findByName("category name"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/category")
                 .header("Content-Type", "application/json")
                 .content("{\"name\": \"category name\"}"))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().is(404));
+                .andExpect(MockMvcResultMatchers.status().is(400));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/category")
                 .header("Content-Type", "application/json")
@@ -127,7 +125,7 @@ class CategoryControllerTest {
                 .content("{\"id\":" + 0 + "," +
                         "\"name\": \"new name\"}"))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().is(404));
+                .andExpect(MockMvcResultMatchers.status().is(400));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/category")
                 .header("Content-Type", "application/json")

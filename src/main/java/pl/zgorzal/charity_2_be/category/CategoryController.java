@@ -3,7 +3,6 @@ package pl.zgorzal.charity_2_be.category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import pl.zgorzal.charity_2_be.exception.AppRequestException;
 
 import javax.validation.Valid;
 
@@ -29,13 +28,7 @@ public class CategoryController {
     @Secured("ROLE_ADMIN")
     @PutMapping
     public void updateCategory(@Valid @RequestBody Category category) {
-        try {
-            categoryService.updateCategory(category);
-        } catch (AppRequestException e) {
-            throw new AppRequestException("Kategoria o id " + category.getId() + " nie istnieje");
-        } catch (Exception e) {
-            throw new AppRequestException("Podana kategoria już istnieje");
-        }
+        categoryService.updateCategory(category);
     }
 
     @Secured("ROLE_ADMIN")

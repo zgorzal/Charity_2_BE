@@ -41,16 +41,14 @@ class InstitutionControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
-        assertNotNull(institutionRepository.findAll()
-                .stream()
-                .filter(s -> s.getName().equals("institution name")));
+        assertNotNull(institutionRepository.findByName("institution name"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"name\": \"institution name\"," +
                         "\"description\":\"description text\"}"))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().is(404));
+                .andExpect(MockMvcResultMatchers.status().is(400));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
@@ -138,7 +136,7 @@ class InstitutionControllerTest {
                         "\"name\": \"new name\", " +
                         "\"description\":\"new description\"}"))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().is(404));
+                .andExpect(MockMvcResultMatchers.status().is(400));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")

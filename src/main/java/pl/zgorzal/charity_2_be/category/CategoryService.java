@@ -13,11 +13,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public void addCategory(Category category) {
-        try {
-            categoryRepository.save(category);
-        } catch (Exception e) {
-            throw new AppRequestException("Podana kategoria już istnieje");
-        }
+        categoryRepository.save(category);
     }
 
     public Category getCategory(Long id) {
