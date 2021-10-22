@@ -60,7 +60,7 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser()
-    void addCategory_notAuthorized_User() throws Exception {
+    void addInstitution_notAuthorized_User() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"name\": \"institution name\"," +
@@ -70,7 +70,7 @@ class InstitutionControllerTest {
     }
 
     @Test
-    void addCategory_notAuthorized() throws Exception {
+    void addInstitution_notAuthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"name\": \"institution name\"," +
@@ -81,7 +81,7 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser
-    void getCategory_authorized() throws Exception {
+    void getInstitution_authorized() throws Exception {
         Institution institution = new Institution();
         institution.setName("test");
         institution.setDescription("test test");
@@ -104,7 +104,7 @@ class InstitutionControllerTest {
     }
 
     @Test
-    void getCategory_notAuthorized() throws Exception {
+    void getInstitution_notAuthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
@@ -112,7 +112,7 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void updateCategory_authorized() throws Exception {
+    void updateInstitution_authorized() throws Exception {
         Institution institution = new Institution();
         institution.setName("test");
         institution.setDescription("test test");
@@ -150,7 +150,7 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser
-    void updateCategory_notAuthorized_User() throws Exception {
+    void updateInstitution_notAuthorized_User() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"id\":" + 1 + "," +
@@ -161,7 +161,7 @@ class InstitutionControllerTest {
     }
 
     @Test
-    void updateCategory_notAuthorized() throws Exception {
+    void updateInstitution_notAuthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/institution")
                 .header("Content-Type", "application/json")
                 .content("{\"id\":" + 1 + "," +
@@ -173,7 +173,7 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void deleteCategory_authorized() throws Exception {
+    void deleteInstitution_authorized() throws Exception {
         Institution institution = new Institution();
         institution.setName("test");
         institution.setDescription("test test");
@@ -194,14 +194,14 @@ class InstitutionControllerTest {
 
     @Test
     @WithMockUser
-    void deleteCategory_notAuthorized_User() throws Exception {
+    void deleteInstitution_notAuthorized_User() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
 
     @Test
-    void deleteCategory_notAuthorized() throws Exception {
+    void deleteInstitution_notAuthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/institution/1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(403));
