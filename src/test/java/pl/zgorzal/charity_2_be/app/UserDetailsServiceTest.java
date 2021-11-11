@@ -10,16 +10,17 @@ import pl.zgorzal.charity_2_be.user.User;
 import pl.zgorzal.charity_2_be.user.UserRepository;
 
 import javax.transaction.Transactional;
+
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class LoginUserServiceTest {
+class UserDetailsServiceTest {
 
     @Autowired
-    private LoginUserService loginUserService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -29,7 +30,7 @@ class LoginUserServiceTest {
         String email = "test@test.pl";
         User user = new User(email, "password", true, new HashSet<>());
         userRepository.save(user);
-        UserDetails userDetails = loginUserService.loadUserByUsername(email);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         assertNotNull(userDetails);
     }
 
@@ -37,6 +38,6 @@ class LoginUserServiceTest {
     void loadUserByUsername_userNotExist_throwUsernameNotFoundException() {
         String email = "notExist@test.pl";
         Assertions.assertThrows(UsernameNotFoundException.class,
-                () -> loginUserService.loadUserByUsername(email));
+                () -> userDetailsService.loadUserByUsername(email));
     }
 }
