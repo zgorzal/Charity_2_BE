@@ -6,6 +6,7 @@ import pl.zgorzal.charity_2_be.category.Category;
 import pl.zgorzal.charity_2_be.category.CategoryService;
 import pl.zgorzal.charity_2_be.donation.DTO.AddDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.GetAllQuantityDonationDTO;
+import pl.zgorzal.charity_2_be.donation.DTO.GetNumberOfDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 import pl.zgorzal.charity_2_be.exception.AppRequestException;
 import pl.zgorzal.charity_2_be.institution.Institution;
@@ -53,6 +54,12 @@ public class DonationService {
         List<Donation> donations = donationRepository.findAll();
         Integer quantity = donations.stream().mapToInt(Donation::getQuantity).sum();
         return new GetAllQuantityDonationDTO(quantity);
+    }
+
+    public GetNumberOfDonationDTO getNumberOfDonation() {
+        List<Donation> donations = donationRepository.findAll();
+        Integer numberOfDonations = donations.size();
+        return new GetNumberOfDonationDTO(numberOfDonations);
     }
 
     public void updateDonation(UpdateDonationDTO updateDonationDTO) {

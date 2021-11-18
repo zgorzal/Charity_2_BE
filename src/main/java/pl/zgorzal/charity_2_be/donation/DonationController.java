@@ -5,6 +5,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.zgorzal.charity_2_be.donation.DTO.AddDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.GetAllQuantityDonationDTO;
+import pl.zgorzal.charity_2_be.donation.DTO.GetNumberOfDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 
 import javax.validation.Valid;
@@ -29,8 +30,13 @@ public class DonationController {
     }
 
     @GetMapping("/quantity")
-    public GetAllQuantityDonationDTO getAllQuantityDonation(){
+    public GetAllQuantityDonationDTO getAllQuantityDonation() {
         return donationService.getAllQuantityDonation();
+    }
+
+    @GetMapping("/count")
+    public GetNumberOfDonationDTO getNumberOfDonation() {
+        return donationService.getNumberOfDonation();
     }
 
     @Secured("ROLE_USER")
