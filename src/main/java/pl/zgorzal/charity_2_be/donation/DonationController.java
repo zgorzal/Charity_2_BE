@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.zgorzal.charity_2_be.donation.DTO.AddDonationDTO;
+import pl.zgorzal.charity_2_be.donation.DTO.GetAllQuantityDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 
 import javax.validation.Valid;
@@ -25,6 +26,11 @@ public class DonationController {
     @GetMapping("/{id}")
     public Donation getDonation(@PathVariable Long id) {
         return donationService.getDonation(id);
+    }
+
+    @GetMapping("/quantity")
+    public GetAllQuantityDonationDTO getAllQuantityDonation(){
+        return donationService.getAllQuantityDonation();
     }
 
     @Secured("ROLE_USER")

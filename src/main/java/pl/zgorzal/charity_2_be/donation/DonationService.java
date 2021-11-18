@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.zgorzal.charity_2_be.category.Category;
 import pl.zgorzal.charity_2_be.category.CategoryService;
 import pl.zgorzal.charity_2_be.donation.DTO.AddDonationDTO;
+import pl.zgorzal.charity_2_be.donation.DTO.GetAllQuantityDonationDTO;
 import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 import pl.zgorzal.charity_2_be.exception.AppRequestException;
 import pl.zgorzal.charity_2_be.institution.Institution;
@@ -46,6 +47,12 @@ public class DonationService {
 
     public Donation getDonation(Long id) {
         return donationRepository.findById(id).orElseThrow(() -> new AppRequestException("Donation not found"));
+    }
+
+    public GetAllQuantityDonationDTO getAllQuantityDonation() {
+        List<Donation> donations = donationRepository.findAll();
+        Integer quantity = donations.stream().mapToInt(Donation::getQuantity).sum();
+        return new GetAllQuantityDonationDTO(quantity);
     }
 
     public void updateDonation(UpdateDonationDTO updateDonationDTO) {
