@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.zgorzal.charity_2_be.exception.AppRequestException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,10 @@ public class CategoryService {
 
     public Category getCategory(Long id) {
         return categoryRepository.findById(id).orElseThrow(() -> new AppRequestException("Category not found"));
+    }
+
+    public List<Category> getAllCategory() {
+        return categoryRepository.findAll();
     }
 
     public void updateCategory(Category category) {

@@ -5,6 +5,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +24,11 @@ public class CategoryController {
     @GetMapping("/{id}")
     public Category getCategory(@PathVariable Long id) {
         return categoryService.getCategory(id);
+    }
+
+    @GetMapping()
+    public List<Category> getAllCategory() {
+        return categoryService.getAllCategory();
     }
 
     @Secured("ROLE_ADMIN")
