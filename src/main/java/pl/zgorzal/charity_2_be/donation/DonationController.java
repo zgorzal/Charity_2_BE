@@ -17,7 +17,7 @@ public class DonationController {
 
     private final DonationService donationService;
 
-    @Secured("ROLE_USER")
+//    @Secured("ROLE_USER")
     @PostMapping
     public void addDonation(@Valid @RequestBody AddDonationDTO addDonationDTO) {
         donationService.addDonation(addDonationDTO);
