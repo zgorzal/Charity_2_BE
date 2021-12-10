@@ -30,11 +30,13 @@ public class DonationController {
         return donationService.getDonation(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/quantity")
     public GetAllQuantityDonationDTO getAllQuantityDonation() {
         return donationService.getAllQuantityDonation();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/count")
     public GetNumberOfDonationDTO getNumberOfDonation() {
         return donationService.getNumberOfDonation();
