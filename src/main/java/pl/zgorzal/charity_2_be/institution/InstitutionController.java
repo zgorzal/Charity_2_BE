@@ -25,6 +25,7 @@ public class InstitutionController {
         return institutionService.getInstitution(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public List<Institution> getAllInstitution() {
         return institutionService.getAllInstitution();
