@@ -10,7 +10,6 @@ import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/donation")
@@ -30,13 +29,11 @@ public class DonationController {
         return donationService.getDonation(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/quantity")
     public GetAllQuantityDonationDTO getAllQuantityDonation() {
         return donationService.getAllQuantityDonation();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/count")
     public GetNumberOfDonationDTO getNumberOfDonation() {
         return donationService.getNumberOfDonation();
