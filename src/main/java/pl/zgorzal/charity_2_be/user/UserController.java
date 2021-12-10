@@ -9,6 +9,7 @@ import pl.zgorzal.charity_2_be.user.DTO.UpdateUserDTO;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")

@@ -10,6 +10,7 @@ import pl.zgorzal.charity_2_be.donation.DTO.UpdateDonationDTO;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/donation")

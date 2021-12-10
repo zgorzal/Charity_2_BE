@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/institution")
@@ -25,7 +26,6 @@ public class InstitutionController {
         return institutionService.getInstitution(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public List<Institution> getAllInstitution() {
         return institutionService.getAllInstitution();
